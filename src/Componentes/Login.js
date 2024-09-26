@@ -48,7 +48,7 @@ const Login = () => {
               isInvalid={!validated && showError}
             />
             <Form.Control.Feedback type="invalid">
-              Please enter a valid email.
+                Ingresa un email valido
             </Form.Control.Feedback>
           </Form.Group>
 
@@ -63,13 +63,13 @@ const Login = () => {
               isInvalid={!validated && showError && password.length < 8}
             />
             <Form.Control.Feedback type="invalid">
-              Password must be at least 8 characters long.
+              La contraseña debe ser de 8 caracteres
             </Form.Control.Feedback>
           </Form.Group>
 
           {showError && (
             <Alert variant="danger" className="mt-3">
-              Please enter a valid email and password with at least 8 characters.
+              El email y la contraseña no son validos
             </Alert>
           )}
 
