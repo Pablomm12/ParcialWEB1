@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Card } from "react-bootstrap";
+import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import { FaRunning, FaSwimmer, FaBicycle } from "react-icons/fa";
-
+import { useTranslation } from "react-i18next"; 
+import cyclingImage from '../images/cycling.jpg'
+import runningImage from '../images/runner.jpg'
+import swimmingImage from '../images/login.jpg'
+import userImage from '../images/user.png'
+import i18n from '../i18n';
 
 const mockUserService = () => {
   return {
@@ -11,7 +16,7 @@ const mockUserService = () => {
       swimming: "1:05",
       cycling: "1:05",
     },
-    avatar: "https://cdn.discordapp.com/attachments/938625558382784532/1288883124813693089/user.png?ex=66f6cd73&is=66f57bf3&hm=5d18dbd84d6596d8562bed23b5cb0941e6a5e9eed1356c2e286883c25aa95ca1&", 
+    avatar: userImage, 
   };
 };
 
@@ -24,15 +29,15 @@ const mockSessionService = () => {
       distance: "40k",
       duration: "2h10m",
       city: cities[Math.floor(Math.random() * cities.length)],
-      image: " https://cdn.discordapp.com/attachments/938625558382784532/1288881484777652224/cycling.jpg?ex=66f6cbec&is=66f57a6c&hm=14e4e5b38623056ecbd41cca2d8ae7295b8c662a2812c988662c7d8c11afbbb3&",
+      image: cyclingImage,
     }),
     running: Array(10).fill({
       title: "Running Session",
-      description: "Recorrido por los parques de Bogotá",
-      distance: "5k",
-      duration: "1h00m",
+      description: "Recorrido alrededor de la bahía de Cartagena",
+      distance: "10k",
+      duration: "1:05h",
       city: cities[Math.floor(Math.random() * cities.length)],
-      image: "https://cdn.discordapp.com/attachments/938625558382784532/1288881459611828235/runner.jpg?ex=66f6cbe6&is=66f57a66&hm=909539dd8ca0d4aba98de48aa44fbdf68e2bb1e2b3628c1064dca54319a49a4a&", 
+      image: runningImage,
     }),
     swimming: Array(10).fill({
       title: "Swimming Session",
@@ -40,7 +45,7 @@ const mockSessionService = () => {
       distance: "5k",
       duration: "1h00m",
       city: cities[Math.floor(Math.random() * cities.length)],
-      image: "https://cdn.discordapp.com/attachments/938625558382784532/1288872065721700433/tom-dils-2lDtnHgiQzc-unsplash.jpg?ex=66f6c326&is=66f571a6&hm=89429a40b3d7c61ad7091fff8f498337a90ed8a3bc76737fd32a47437204d90e&", 
+      image: swimmingImage,
     }),
   };
 };
@@ -48,15 +53,18 @@ const mockSessionService = () => {
 const Home = () => {
   const [user, setUser] = useState({});
   const [sessions, setSessions] = useState({ cycling: [], running: [], swimming: [] });
+  const { t } = useTranslation(); 
 
   useEffect(() => {
-
     const userData = mockUserService();
     const sessionData = mockSessionService();
     setUser(userData);
     setSessions(sessionData);
   }, []);
 
+  const changeLanguage = (lang) => {
+    i18n.changeLanguage(lang);
+  };
 
   const SessionCard = ({ session }) => (
     <Card className="mb-3 session-card">
@@ -70,56 +78,66 @@ const Home = () => {
           display: "flex",
           flexDirection: "column",
           justifyContent: "flex-end",
+          padding: "10px",
         }}
       >
-        <Card.Body className="text-white bg-dark bg-opacity-50">
-          <Card.Title className="text-truncate">{session.title}</Card.Title>
-          <Card.Text className="text-truncate">{session.description}</Card.Text>
-          <Card.Text className="text-truncate">
-            {session.distance} - {session.duration} en {session.city}
-          </Card.Text>
-        </Card.Body>
+        <div style={{ color: "white", textShadow: "2px 2px 4px rgba(0,0,0,0.8)" }}>
+          <h4>{session.title}</h4>
+          <p>{session.description}</p>
+          <p>
+            <span style={{ color: "white" }}>
+              {t("DistanceDuration", { distance: session.distance, duration: session.duration })}
+            </span>{" "}
+            {t("InCity", { city: session.city })}
+          </p>
+        </div>
       </div>
     </Card>
   );
 
+  const renderSessionCards = (sessions) => {
+    return (
+      <>
+        {sessions.map((session, idx) => (
+          <Col key={idx} xs={12} md={6} className="mb-3"> {/* 2 columnas */}
+            <SessionCard session={session} />
+          </Col>
+        ))}
+      </>
+    );
+  };
+
   return (
     <Container fluid>
-      {/* contenido principal */}
+      {/* Botones de idioma */}
+      <div className="text-left my-3">
+        <Button onClick={() => changeLanguage('es')}>Español</Button>
+        <Button onClick={() => changeLanguage('en')} className="ml-2">English</Button>
+      </div>
+
+      {/* Contenido principal - Cada deporte con 2 columnas y 5 filas */}
       <Row className="my-4">
         <Col>
-          <h2 className="text-center">Cycling</h2>
+          <h2 className="text-center">{t("Cycling")}</h2>
           <Row>
-            {sessions.cycling.map((session, idx) => (
-              <Col key={idx} sm={12} md={6} lg={4}>
-                <SessionCard session={session} />
-              </Col>
-            ))}
+            {renderSessionCards(sessions.cycling)}
           </Row>
         </Col>
         <Col>
-          <h2 className="text-center">Running</h2>
+          <h2 className="text-center">{t("Running")}</h2>
           <Row>
-            {sessions.running.map((session, idx) => (
-              <Col key={idx} sm={12} md={6} lg={4}>
-                <SessionCard session={session} />
-              </Col>
-            ))}
+            {renderSessionCards(sessions.running)}
           </Row>
         </Col>
         <Col>
-          <h2 className="text-center">Swimming</h2>
+          <h2 className="text-center">{t("Swimming")}</h2>
           <Row>
-            {sessions.swimming.map((session, idx) => (
-              <Col key={idx} sm={12} md={6} lg={4}>
-                <SessionCard session={session} />
-              </Col>
-            ))}
+            {renderSessionCards(sessions.swimming)}
           </Row>
         </Col>
       </Row>
 
-      {/*usuario */}
+      {/* Sección del usuario */}
       <Row style={{ backgroundColor: 'blue', color: 'white' }} className="p-4 text-white text-center">
         <Col md={2}>
           <img
@@ -134,15 +152,15 @@ const Home = () => {
         </Col>
         <Col md={2}>
           <FaRunning size={32} />
-          <p>{user.bestTimes?.running}</p>
+          <p>{t("BestRunningTime")}: {user.bestTimes?.running}</p>
         </Col>
         <Col md={2}>
           <FaSwimmer size={32} />
-          <p>{user.bestTimes?.swimming}</p>
+          <p>{t("BestSwimmingTime")}: {user.bestTimes?.swimming}</p>
         </Col>
         <Col md={2}>
           <FaBicycle size={32} />
-          <p>{user.bestTimes?.cycling}</p>
+          <p>{t("BestCyclingTime")}: {user.bestTimes?.cycling}</p>
         </Col>
       </Row>
     </Container>
