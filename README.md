@@ -1,70 +1,52 @@
-# Getting Started with Create React App
+# Pasos para la ejecuccion del parcial
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Clonar el repositorio
+Inicialmente se debe clonar el repositorio en la maquina local, esto se puede hacer en una terminal gitbash con el comando 
+git clone "https://github.com/Pablomm12/ParcialWEB1.git"
+cd <nombre-del-repositorio>
 
-## Available Scripts
+## Instalar dependencias
+Correr el siguiente comando para instalar todas las dependencias necesarias para ejecutar la aplicación, como react-bootstrap, react-i18next, y otros paquetes utilizados.
+npm install
 
-In the project directory, you can run:
+## En caso de que ya este en su IDE de preferencia puede ejecutar el commando npm start en la terminal el cual desplegara la aplicacion localmente en el url con puerto 3000
+npm start
+http://localhost:3000
 
-### `npm start`
+## Aplicacion
+Inicialmente se ve la pagina home que en esencia es la segunda pantalla pedida en el parcial, si se ingrea al url http://localhost:3000/login, se puede ver la pantalla pedida en el primer punto del parcial.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+# Reporte de desarollo y decisiones tomadas en el parcial
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Pantalla Login
+* Se hizo la validación de correo y contraseña en el componente de Login, se implementó una validación que verifica si el correo sigue un formato válido utilizando una expresión regular, y si la contraseña tiene al menos 8 caracteres. Esto garantiza que los usuarios ingresen credenciales correctas, cumpliendo lo pedido en el parcial
 
-### `npm test`
+* Manejo de errores: En caso de que el usuario ingrese información incorrecta, se muestra un mensaje de error utilizando Alert de react-bootstrap, y se resaltan los campos que necesitan corrección. 
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Pantalla Home 
+* Diseño de las tarjetas: Para cada categoría de deporte (ciclismo, carrera y natación) se hizo una distribución de 2 columnas por 5 filas. Esto se implementó usando el componente Row y Col de react-bootstrap. 
+* Cada deporte se distribuye en un layout de 2 columnas y 5 filas usando el componente Col con xs={12} (para pantallas pequeñas) y md={6} (para pantallas medianas y grandes).
 
-### `npm run build`
+* Internacionalización: Se uso i18n para la traducción dinámica de la aplicación entre inglés y español. Esto permite modificar los textos estáticos en la página y los mensajes de error utilizando la biblioteca react-i18next.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+* Botones para cambiar el idioma: Se colocaron botones de idioma en la parte superior de ambas pantallas (login y home). Estos botones cambian el idioma en tiempo real, permitiendo que el usuario vea el contenido en el idioma de su preferencia.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+* Iconos y visualización de datos: Para mejorar la presentación visual, se integran iconos específicos de cada deporte en la sección de usuario utilizando la librería react-icons. Esto mejora la claridad y facilita la lectura rápida de los datos por parte del usuario.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Datos simulados (mock data):
 
-### `npm run eject`
+* Se utilizan funciones de servicio mock para simular los datos de usuario y las sesiones de entrenamiento.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+* mockUserService: Devuelve un objeto con información básica del usuario, incluyendo su nombre, avatar y mejores tiempos en los tres deportes.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+* mockSessionService: Genera 10 sesiones de entrenamiento para cada deporte (ciclismo, carrera y natación) con información como el título, descripción, distancia, duración y ciudad.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Componentes de React y elementos utilizados
+### Componentes React 
+* Login: Componente que maneja el formulario de autenticación con validación de entradas.
+* Home: Página principal que muestra las sesiones de entrenamiento en categorías.
+### react-bootstrap:
+* Container, Row, Col: Utilizados para crear un layout responsive.
+* Form, Button, Alert: Utilizados para crear el formulario de login y mostrar retroalimentación visual.
+*  react-i18next (i18n):Se utilizó para gestionar la traducción dinámica del contenido de la aplicación.
+*  Iconos de React: Se utilizaron iconos de react-icons para mejorar la representación visual de las categorías de deporte en la sección de usuario (íconos de carrera, natación y ciclismo).
